@@ -8,30 +8,32 @@ export class AzleApp extends LitElement {
 
     constructor() {
         super();
-        this.getDb();
+        this.getBooks();
     }
 
-    async getDb() {
+    async getBooks() {
         this.db = 'Loading...';
 
         const response = await fetch(
-            `${import.meta.env.VITE_CANISTER_ORIGIN}/db`
+            `${import.meta.env.VITE_CANISTER_ORIGIN}/books`
         );
         const responseJson = await response.json();
 
         this.db = responseJson;
     }
 
-    async updateDb() {
+    async updateBooks() {
         this.db = 'Loading...';
 
         const response = await fetch(
-            `${import.meta.env.VITE_CANISTER_ORIGIN}/db/update`,
+            `${import.meta.env.VITE_CANISTER_ORIGIN}/books`,
             {
                 method: 'POST',
                 headers: [['Content-Type', 'application/json']],
                 body: JSON.stringify({
-                    hello: 'world'
+                    id: '987',
+                    title: 'Dracula',
+                    author: 'Bram Stoker'
                 })
             }
         );
@@ -42,20 +44,20 @@ export class AzleApp extends LitElement {
 
     render() {
         return html`
-            <h1>Azle Hello World</h1>
+            <h1>Azle Día 3</h1>
 
             <div>db: ${JSON.stringify(this.db)}</div>
 
             <br />
 
             <div>
-                <button @click=${this.getDb}>Test /db</button>
+                <button @click=${this.getBooks}>Test GET /books</button>
             </div>
 
             <br />
 
             <div>
-                <button @click=${this.updateDb}>Test /db/update</button>
+                <button @click=${this.updateBooks}>Test POST /books</button>
             </div>
         `;
     }
