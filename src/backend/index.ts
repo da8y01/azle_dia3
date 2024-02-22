@@ -36,8 +36,13 @@ export default Server(() => {
      * }
      */
     app.post("/books", (req, res) => {
-        books = [...books, req.body]
-        res.send("Ok");
+        if (books.some(book => book.id === req.body.id)) {
+            res.send(`Error: Ya existe un libro con id "${req.body.id}", no se permite creación.`)
+        }
+        else {
+            books = [...books, req.body]
+            res.send("Ok: Libro agregado.")
+        }
     });
 
      /*
