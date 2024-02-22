@@ -1,5 +1,5 @@
 import { Server } from 'azle';
-import express from 'express';
+import express, { Request, Response, NextFunction } from 'express';
 
 type Book = {
     id: number,
@@ -13,10 +13,16 @@ let books: Book[] = [{
     author: "Homero"
 }];
 
+function logger(req: Request, res: Response, next: NextFunction) {
+    console.log(req.body);
+    next();
+}
+
 export default Server(() => {
     const app = express();
     
     app.use(express.json());
+    app.use(logger);
     
     /*
      * Method: GET
